@@ -27,6 +27,23 @@
       margin-top: 1rem;
       font-weight: 600;
     }
+    .counter-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #ddd;
+    }
+    .counter-section h2 {
+      margin-bottom: 0.5rem;
+    }
+    #count {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+    .counter-buttons {
+      display: flex;
+      gap: 8px;
+    }
   </style>
 </head>
 <body>
@@ -38,6 +55,17 @@
 
   <p id="output"></p>
 
+  <div class="counter-section">
+    <h2>Click Counter</h2>
+    <p>Count is saved in localStorage.</p>
+    <p id="count">0</p>
+    <div class="counter-buttons">
+      <button id="incrementBtn">+1</button>
+      <button id="decrementBtn">-1</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
   <script>
     const input = document.getElementById("nameInput");
     const button = document.getElementById("greetBtn");
@@ -47,6 +75,38 @@
       const text = input.value.trim() || "nothing in particular";
       const now = new Date().toLocaleTimeString();
       output.textContent = `You typed: "${text}" (at ${now})`;
+    });
+
+    // Click Counter with localStorage
+    const STORAGE_KEY = "clickCounter";
+    const countDisplay = document.getElementById("count");
+    const incrementBtn = document.getElementById("incrementBtn");
+    const decrementBtn = document.getElementById("decrementBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function getCount() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored !== null ? parseInt(stored, 10) : 0;
+    }
+
+    function setCount(value) {
+      localStorage.setItem(STORAGE_KEY, value);
+      countDisplay.textContent = value;
+    }
+
+    // Initialize display from localStorage
+    countDisplay.textContent = getCount();
+
+    incrementBtn.addEventListener("click", () => {
+      setCount(getCount() + 1);
+    });
+
+    decrementBtn.addEventListener("click", () => {
+      setCount(getCount() - 1);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      setCount(0);
     });
   </script>
 </body>
